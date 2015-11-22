@@ -1,19 +1,3 @@
-/**
- * Copyright 2014 IBM Corp. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 'use strict';
 
 var express = require('express'),
@@ -38,14 +22,12 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage });
 
-// Bootstrap application settings
 require('./config/express')(app);
 
-// if bluemix credentials exists, then override local
 var credentials = extend({
   version: 'v1',
-  username: '<username>',
-  password: '<password>'
+  username: 'b85f7be5-741f-4773-8caa-5470e0ee2b1a',
+  password: 'DYNHBE59fqhG'
 }, bluemix.getServiceCreds('visual_recognition')); // VCAP_SERVICES
 
 // Create the service wrapper
@@ -60,6 +42,8 @@ app.post('/', upload.single('image'), function(req, res, next) {
   }
 
   var imgFile;
+  console.log(req.file);
+  console.log(req.body);
 
   if (req.file) {
     // file image
@@ -95,6 +79,6 @@ app.post('/', upload.single('image'), function(req, res, next) {
 // error-handler settings
 require('./config/error-handler')(app);
 
-var port = process.env.VCAP_APP_PORT || 3000;
+var port = process.env.VCAP_APP_PORT || 3003;
 app.listen(port);
 console.log('listening at:', port);
